@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/10TH-SPRINGBOOT-SENIOR.iml" filepath="$PROJECT_DIR$/.idea/10TH-SPRINGBOOT-SENIOR.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/umc10th.iml" filepath="$PROJECT_DIR$/.idea/modules/umc10th.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/umc10th.test.iml" filepath="$PROJECT_DIR$/.idea/modules/umc10th.test.iml" />
     </modules>
   </component>
 </project>
