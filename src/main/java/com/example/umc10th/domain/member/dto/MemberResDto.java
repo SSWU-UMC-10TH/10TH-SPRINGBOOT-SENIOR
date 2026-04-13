@@ -11,4 +11,17 @@ public class MemberResDto {
             String phoneNumber,
             Integer point
     ){}
+
+    public record HomeInfoDto(
+            String nickname,
+            Integer point,
+            Integer ongoingMissionCount,
+            Integer completedMissionCount
+    ) {}
+
+    public record SignUpResultDto(
+            Long memberId,
+            String email,
+            String name
+    ) {}
 }

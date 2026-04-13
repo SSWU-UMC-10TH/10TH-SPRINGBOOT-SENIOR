@@ -18,13 +18,32 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    //mypage
     @PostMapping("/v1/users/me")
     public ApiResponse<MemberResDto.GetInfo> getInfo(
             @RequestBody MemberReqDto.GetInfo dto
             ){
-        BaseSuccessCode code= MemberSuccessCode.OK;
+        BaseSuccessCode code= GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, memberService.getInfo(dto));
     }
+
+    @GetMapping("/home")
+    public ApiResponse<MemberResDto.HomeInfoDto> getHome() {
+        return ApiResponse.onSuccess(
+                MemberSuccessCode.OK,
+                memberService.getHomeInfo()
+        );
+    }
+
+
+    @PostMapping("/signup")
+    public ApiResponse<MemberResDto.SignUpResultDto> signUp(
+            @RequestBody MemberReqDto.SignUpDto request
+    ) {
+        return ApiResponse.onSuccess(
+                MemberSuccessCode.OK,
+                memberService.signUp(request)
+        );
+    }
+
 
 }
