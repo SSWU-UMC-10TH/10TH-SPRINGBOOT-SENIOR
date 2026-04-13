@@ -7,20 +7,20 @@ import com.likelion.umc10th.domain.member.enums.Gender;
 import com.likelion.umc10th.domain.member.enums.SocialType;
 import com.likelion.umc10th.global.config.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
+import lombok.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="members")
 public class Member extends BaseEntity {
