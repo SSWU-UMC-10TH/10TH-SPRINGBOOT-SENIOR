@@ -1,8 +1,8 @@
 package com.example.umc.domain.user.entity;
 
-import com.example.demo.global.entity.BaseEntity;
 import com.example.umc.domain.mission.entity.Mission;
 import com.example.umc.domain.mission.enums.MissionStatus;
+import com.example.umc.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

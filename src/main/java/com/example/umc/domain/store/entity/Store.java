@@ -1,7 +1,7 @@
 package com.example.umc.domain.store.entity;
 
-import com.example.demo.global.entity.BaseEntity;
 import com.example.umc.domain.store.enums.PlaceProvider;
+import com.example.umc.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
