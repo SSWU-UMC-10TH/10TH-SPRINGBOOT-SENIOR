@@ -1,8 +1,8 @@
 package com.example.umc.domain.user.entity;
 
-import com.example.demo.global.entity.BaseEntity;
+import com.example.umc.domain.auth.entity.Auth;
 import com.example.umc.domain.user.enums.Gender;
-import com.example.umc.domain.user.enums.SocialProvider;
+import com.example.umc.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,9 +24,6 @@ public class User extends BaseEntity {
     @Column(name = "nickname", nullable = false, length = 10)
     private String nickname;
 
-    @Column(name = "email", nullable = false, length = 50)
-    private String email;
-
     @Column(name = "phone_number", length = 25)
     private String phoneNumber;
 
@@ -43,10 +40,11 @@ public class User extends BaseEntity {
     @Column(name = "point", nullable = false)
     private Integer point = 0;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "provider", nullable = false)
-    private SocialProvider provider = SocialProvider.EMAIL;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Auth auth;
 
-    @Column(name = "provider_id", length = 50)
-    private String providerId;
+    public void assignAuth(Auth auth) {
+        this.auth = auth;
+        auth.attachUser(this);
+    }
 }
