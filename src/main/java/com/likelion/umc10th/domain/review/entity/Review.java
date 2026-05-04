@@ -4,14 +4,14 @@ import com.likelion.umc10th.domain.member.entity.Member;
 import com.likelion.umc10th.domain.store.entity.Store;
 import com.likelion.umc10th.global.config.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "reviews")
 public class Review extends BaseEntity {
