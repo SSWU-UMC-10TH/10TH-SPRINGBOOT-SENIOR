@@ -82,9 +82,6 @@ public class Member extends BaseEntity {
     private List<Qna> qnaList = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @Builder.Default
-    private List<UserTerms> userTermsList = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)

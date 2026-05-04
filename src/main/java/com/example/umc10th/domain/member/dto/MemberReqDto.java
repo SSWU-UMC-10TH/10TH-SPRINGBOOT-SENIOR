@@ -31,5 +31,12 @@ public class MemberReqDto {
             @JsonProperty("alarm_qna_reply")
             Boolean alarmQnaReply
     ) {}
+    public record MyPageDto(
+            String nickname,
+            String email,
+            String phoneNumber,
+            Boolean phoneVerified,
+            Integer point
+    ) {}
 
 }

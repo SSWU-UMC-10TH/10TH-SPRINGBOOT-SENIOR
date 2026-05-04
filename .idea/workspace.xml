@@ -5,13 +5,64 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c044c2ff-ec21-4517-8870-df58f70a72a1" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/controller/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/controller/MemberController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/dto/MemberReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/dto/MemberReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/dto/MemberResDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/dto/MemberResDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/entity/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/entity/Member.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/entity/UserTerms.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/repository/MemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/repository/MemberRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/service/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/member/service/MemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/controller/MissionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/controller/MissionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/dto/MissionReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/dto/MissionReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/dto/MissionResDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/dto/MissionResDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/entity/Mission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/entity/Mission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/entity/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/entity/Store.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/repository/MissionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/repository/MissionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/service/MissionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/mission/service/MissionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/review/dto/ReviewReqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/review/dto/ReviewReqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/review/dto/ReviewResDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/review/dto/ReviewResDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/review/entity/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/review/entity/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/review/repository/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/review/repository/ReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/review/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/umc10th/domain/review/service/ReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="umc10th" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -20,20 +71,37 @@
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="3Bz7oBHBU1IUsAFFJSPD9DMpCWU" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.10TH-SPRINGBOOT-SENIOR [:com.example.umc10th.Umc10thApplication.main()].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "day-week04",
+    "git-widget-placeholder": "day-week06",
     "kotlin-language-version-configured": "true"
   }
 }]]></component>
   <component name="RunManager">
+    <configuration name="Umc10thApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.umc10th.Umc10thApplication" />
+      <module name="com.example.umc10th.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.umc10th.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="10TH-SPRINGBOOT-SENIOR" />
       <method v="2">
@@ -45,6 +113,11 @@
       <option name="filePath" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="애플리케이션.Umc10thApplication" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="디폴트 작업">

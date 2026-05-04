@@ -18,7 +18,15 @@ public class MissionResDto {
             Boolean isProgressed,
             Boolean isFinished
     ) {}
-
+    public record MyMissionDto(
+            Long missionId,
+            Integer rewardPoint,
+            String storeName,
+            String conditionAmount,
+            Boolean isSuccess,
+            Long reviewId
+    ) {
+    }
     public record CompleteMissionDto(
             Long missionId,
             Boolean isFinished,

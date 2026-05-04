@@ -27,6 +27,7 @@ public class Mission extends BaseEntity {
     private Integer point;
     private LocalDate deadline;
     private Integer rewardPercent;
+    private Integer rewardPoint;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,4 +38,9 @@ public class Mission extends BaseEntity {
     @OneToMany(mappedBy = "mission", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<UserMission> userMissionList = new ArrayList<>();
+
+    public void setIsSuccess(boolean b) {
+    }
+
+
 }
