@@ -1,7 +1,7 @@
-package com.example.umc.domain.user.entity;
+package com.example.umc.domain.mission.entity;
 
-import com.example.umc.domain.mission.entity.Mission;
 import com.example.umc.domain.mission.enums.MissionStatus;
+import com.example.umc.domain.user.entity.User;
 import com.example.umc.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -30,4 +30,12 @@ public class UserMission extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private MissionStatus state = MissionStatus.NOT_STARTED;
+
+    public void complete() {
+        if (this.state == MissionStatus.COMPLETED) {
+            throw new IllegalStateException("이미 완료된 미션입니다.");
+        }
+
+        this.state = MissionStatus.COMPLETED;
+    }
 }

@@ -1,27 +1,50 @@
 package com.example.umc.domain.mission.controller;
 
-import com.example.umc.domain.mission.dto.CompleteMissionRequest;
+import com.example.umc.domain.mission.dto.HomeMissionListResponse;
+import com.example.umc.domain.mission.dto.MyMissionListResponse;
+import com.example.umc.domain.mission.service.MissionService;
 import com.example.umc.global.apiPayload.ApiResponse;
-import jakarta.validation.Valid;
+import com.example.umc.global.apiPayload.code.GeneralSuccessCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/missions")
 public class MissionController {
 
-    @GetMapping
-    public ApiResponse<Void> getMissions(
-            @RequestParam(defaultValue = "0") Integer page,
+    private final MissionService missionService;
+
+    @GetMapping("/my")
+    public ApiResponse<MyMissionListResponse> getMyMissions(
+            @RequestParam Long userId,
+            @RequestParam(required = false) Long cursor,
             @RequestParam(defaultValue = "10") Integer size
     ) {
-        return null;
+        return ApiResponse.onSuccess(
+                GeneralSuccessCode.OK,
+                missionService.getMyMissions(userId, cursor, size)
+        );
+    }
+
+    @GetMapping
+    public ApiResponse<HomeMissionListResponse> getHomeMissions(
+            @RequestParam Long regionId,
+            @RequestParam(required = false) Long cursor,
+            @RequestParam(defaultValue = "10") Integer size
+    ) {
+        return ApiResponse.onSuccess(
+                GeneralSuccessCode.OK,
+                missionService.getHomeMissions(regionId, cursor, size)
+        );
     }
 
     @PatchMapping("/{missionId}")
     public ApiResponse<Void> completeMission(
             @PathVariable Long missionId,
-            @RequestBody @Valid CompleteMissionRequest req
+            @RequestParam Long userId
     ) {
-        return null;
+        missionService.completeMission(userId, missionId);
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK,null);
     }
 }
