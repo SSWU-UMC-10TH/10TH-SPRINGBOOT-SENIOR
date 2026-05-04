@@ -16,6 +16,7 @@ public class Region {
     @Column(name = "region_id")
     private Long id;
 
+    // 계층 탐색 요구가 많아질 경우 양방향 연관관계를 여는 걸 고려
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Region parent;

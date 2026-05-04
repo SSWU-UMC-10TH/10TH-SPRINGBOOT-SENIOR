@@ -1,7 +1,7 @@
 package com.example.umc.domain.mission.entity;
 
-import com.example.demo.global.entity.BaseEntity;
 import com.example.umc.domain.store.entity.Store;
+import com.example.umc.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
