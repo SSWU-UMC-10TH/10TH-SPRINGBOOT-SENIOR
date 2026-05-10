@@ -2,6 +2,7 @@ package com.likelion.umc10th.domain.review.dto;
 
 import lombok.Builder;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class ReviewResDTO {
     public record ReviewDetailDTO(
             Long reviewId,
             String storeName,
-            Double star,
+            BigDecimal star,
             String content,
             LocalDate createdAt
     ) {}

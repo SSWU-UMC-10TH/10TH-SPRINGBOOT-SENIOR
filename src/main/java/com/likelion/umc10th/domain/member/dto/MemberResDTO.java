@@ -19,7 +19,15 @@ public class MemberResDTO {
             Integer totalPoints,
             Integer completedMissions,
             Integer targetMissions,
-            List<HomeMissionSummaryDTO> myMissions
+            HomeMissionListDTO missionData
+    ){}
+
+    @Builder
+    public record HomeMissionListDTO(
+            List<HomeMissionSummaryDTO> missionList,
+            Integer totalPages,
+            Long totalElements,
+            Boolean isLast
     ){}
 
     @Builder
@@ -31,4 +39,11 @@ public class MemberResDTO {
             String deadlineDDay,
             String status
     ){}
+
+    @Builder
+    public record MyPageDTO(
+            String nickname,
+            String socialEmail,
+            Integer totalPoints
+    ) {}
 }
