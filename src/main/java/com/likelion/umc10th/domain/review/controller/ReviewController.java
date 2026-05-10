@@ -26,4 +26,11 @@ public class ReviewController {
         ReviewResDTO.CreateReviewResultDTO result = reviewService.createReview(memberId, storeId, request);
         return ApiResponse.onSuccess(GeneralSuccessCode.CREATED, result);
     }
+
+    @PostMapping("/reviews/mine")
+    public ApiResponse<ReviewResDTO.MyReviewListDTO> getMyReviews(
+            @RequestBody @Valid ReviewReqDTO.MyReviewListRequestDTO request
+    ) {
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, reviewService.getMyReviewList(request));
+    }
 }
