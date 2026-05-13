@@ -6,6 +6,7 @@ import com.example.umc.domain.mission.enums.MissionStatus;
 import com.example.umc.domain.mission.repository.UserMissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,19 +107,13 @@ public class MissionService {
 
     @Transactional(readOnly = true)
     public InProgressMissionListResponse getInProgressMissions(InProgressMissionRequest req) {
-        List<UserMission> result = userMissionRepository.findInProgressMissions(
+        Slice<UserMission> result = userMissionRepository.findInProgressMissions(
                 req.userId(),
                 MissionStatus.IN_PROGRESS,
-                PageRequest.of(req.page(), req.size() + 1)
+                PageRequest.of(req.page(), req.size())
         );
 
-        boolean hasNext = result.size() > req.size();
-
-        if (hasNext) {
-            result = result.subList(0, req.size());
-        }
-
-        List<InProgressMissionResponse> missions = result.stream()
+        List<InProgressMissionResponse> missions = result.getContent().stream()
                 .map(um -> new InProgressMissionResponse(
                         um.getId(),
                         um.getMission().getId(),
@@ -131,9 +126,9 @@ public class MissionService {
 
         return new InProgressMissionListResponse(
                 missions,
-                req.page(),
-                req.size(),
-                hasNext
+                result.getNumber(),
+                result.getSize(),
+                result.hasNext()
         );
     }
 }
