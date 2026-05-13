@@ -33,4 +33,43 @@ public class Review extends BaseEntity {
     @Lob
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
+
+    public static Review create(Store store, User user, Integer star, String content) {
+        validateStore(store);
+        validateUser(user);
+        validateStar(star);
+        validateContent(content);
+
+        Review review = new Review();
+        review.store = store;
+        review.user = user;
+        review.star = star;
+        review.content = content;
+
+        return review;
+    }
+
+    private static void validateStore(Store store) {
+        if (store == null) {
+            throw new IllegalArgumentException("가게 정보는 필수입니다.");
+        }
+    }
+
+    private static void validateUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("사용자 정보는 필수입니다.");
+        }
+    }
+
+    private static void validateStar(Integer star) {
+        if (star == null || star < 1 || star > 5) {
+            throw new IllegalArgumentException("별점은 1점 이상 5점 이하여야 합니다.");
+        }
+    }
+
+    private static void validateContent(String content) {
+        if (content == null || content.isBlank()) {
+            throw new IllegalArgumentException("리뷰 내용은 필수입니다.");
+        }
+    }
 }
