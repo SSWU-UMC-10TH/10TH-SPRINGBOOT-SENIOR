@@ -1,9 +1,6 @@
 package com.example.umc.domain.mission.service;
 
-import com.example.umc.domain.mission.dto.HomeMissionListResponse;
-import com.example.umc.domain.mission.dto.HomeMissionResponse;
-import com.example.umc.domain.mission.dto.MyMissionListResponse;
-import com.example.umc.domain.mission.dto.MyMissionResponse;
+import com.example.umc.domain.mission.dto.*;
 import com.example.umc.domain.mission.entity.UserMission;
 import com.example.umc.domain.mission.enums.MissionStatus;
 import com.example.umc.domain.mission.repository.UserMissionRepository;
@@ -105,5 +102,38 @@ public class MissionService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자의 미션을 찾을 수 없습니다."));
 
         userMission.complete();
+    }
+
+    @Transactional(readOnly = true)
+    public InProgressMissionListResponse getInProgressMissions(InProgressMissionRequest req) {
+        List<UserMission> result = userMissionRepository.findInProgressMissions(
+                req.userId(),
+                MissionStatus.IN_PROGRESS,
+                PageRequest.of(req.page(), req.size() + 1)
+        );
+
+        boolean hasNext = result.size() > req.size();
+
+        if (hasNext) {
+            result = result.subList(0, req.size());
+        }
+
+        List<InProgressMissionResponse> missions = result.stream()
+                .map(um -> new InProgressMissionResponse(
+                        um.getId(),
+                        um.getMission().getId(),
+                        um.getMission().getName(),
+                        um.getMission().getType(),
+                        um.getMission().getStore().getName(),
+                        um.getMission().getDeadline()
+                ))
+                .toList();
+
+        return new InProgressMissionListResponse(
+                missions,
+                req.page(),
+                req.size(),
+                hasNext
+        );
     }
 }

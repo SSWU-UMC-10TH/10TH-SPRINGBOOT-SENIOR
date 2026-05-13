@@ -57,4 +57,19 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
             @Param("userId") Long userId,
             @Param("missionId") Long missionId
     );
+
+    @Query("""
+        SELECT um
+        FROM UserMission um
+        JOIN FETCH um.mission m
+        JOIN FETCH m.store s
+        WHERE um.user.id = :userId
+          AND um.state = :status
+        ORDER BY um.id ASC
+    """)
+    List<UserMission> findInProgressMissions(
+            @Param("userId") Long userId,
+            @Param("status") MissionStatus status,
+            Pageable pageable
+    );
 }
