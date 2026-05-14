@@ -23,11 +23,11 @@ public class MissionService {
     private final ReviewRepository reviewRepository;
 
     public Page<MissionResDto.MyMissionDto> getMyMissions(
-            String authorization,
+            Long userId,
             Boolean isSuccess,
             Pageable pageable
     ) {
-        Long memberId = 1L;
+        Long memberId = userId;
 
         Page<MemberMission> memberMissions =
                 memberMissionRepository.findByMemberIdAndIsSuccess(

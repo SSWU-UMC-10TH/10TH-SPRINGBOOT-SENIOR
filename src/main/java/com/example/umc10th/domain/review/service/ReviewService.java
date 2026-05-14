@@ -10,6 +10,9 @@ import com.example.umc10th.domain.review.dto.ReviewResDto;
 import com.example.umc10th.domain.review.entity.Review;
 import com.example.umc10th.domain.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +60,104 @@ public class ReviewService {
                 mission.getId(),
                 savedReview.getStar().intValue(),
                 savedReview.getContent()
+        );
+    }
+
+    public Slice<ReviewResDto.MyReviewDto> getMyReviews(
+            Long userId,
+            String sort,
+            Long lastId,
+            Integer lastStar,
+            int size
+    ) {
+
+        if (sort.equals("id")) {
+            return getReviewsById(userId, lastId, size);
+        }
+
+        if (sort.equals("star")) {
+            return getReviewsByStar(userId, lastId, lastStar, size);
+        }
+
+        throw new IllegalArgumentException("잘못된 정렬 방식입니다.");
+    }
+
+    private Slice<ReviewResDto.MyReviewDto> getReviewsById(
+            Long userId,
+            Long lastId,
+            int size
+    ) {
+
+        Pageable pageable = PageRequest.of(0, size);
+
+        Slice<Review> reviews;
+
+        if (lastId == null) {
+            reviews = reviewRepository
+                    .findByMemberIdOrderByIdDesc(
+                            userId,
+                            pageable
+                    );
+
+        } else {
+
+            reviews = reviewRepository
+                    .findByMemberIdAndIdLessThanOrderByIdDesc(
+                            userId,
+                            lastId,
+                            pageable
+                    );
+        }
+
+        return reviews.map(review ->
+                new ReviewResDto.MyReviewDto(
+                        review.getId(),
+                        review.getStore().getName(),
+                        review.getStar(),
+                        review.getContent(),
+                        review.getCreatedAt().toLocalDate()
+                )
+        );
+    }
+
+    private Slice<ReviewResDto.MyReviewDto> getReviewsByStar(
+            Long userId,
+            Long lastId,
+            Integer lastStar,
+            int size
+    ) {
+
+        Pageable pageable = PageRequest.of(0, size);
+
+        Slice<Review> reviews;
+
+        if (lastId == null || lastStar == null) {
+
+            reviews = reviewRepository
+                    .findByMemberIdOrderByStarDescIdDesc(
+                            userId,
+                            pageable
+                    );
+
+        } else {
+
+            reviews = reviewRepository
+                    .findReviewsByStarCursor(
+                            userId,
+                            lastStar,
+                            lastId,
+                            pageable
+                    );
+        }
+
+        return reviews.map(review ->
+                new ReviewResDto.MyReviewDto(
+                        review.getId(),
+                        review.getStore().getName(),
+                        review.getStar(),
+                        review.getContent(),
+                        review.getCreatedAt().toLocalDate()
+                )
         );
     }
 }

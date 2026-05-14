@@ -22,7 +22,10 @@ public enum GeneralErrorCode implements BaseErrorCode{
             "해당 리소스를 찾을 수 없습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.BAD_REQUEST,
             "COMMON400_2",
-            "서버 에러 발생");
+            "서버 에러 발생"),
+    INVALID_REQUEST(HttpStatus.BAD_REQUEST,
+            "COMMON400", "잘못된 요청입니다.(검증오류)");
+
 
     private final HttpStatus status;
     private final String code;
