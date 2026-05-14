@@ -5,10 +5,13 @@ import com.example.umc10th.domain.member.dto.MemberReqDto;
 import com.example.umc10th.domain.member.dto.MemberResDto;
 import com.example.umc10th.domain.member.exception.code.MemberSuccessCode;
 import com.example.umc10th.domain.member.service.MemberService;
+import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
 import com.example.umc10th.global.apiPayload.code.GeneralSuccessCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,23 +30,23 @@ public class MemberController {
     }
 
     @GetMapping("/home")
-    public ApiResponse<MemberResDto.HomeInfoDto> getHome() {
-        return ApiResponse.onSuccess(
-                MemberSuccessCode.OK,
-                memberService.getHomeInfo()
-        );
-    }
-
-
-    @PostMapping("/signup")
-    public ApiResponse<MemberResDto.SignUpResultDto> signUp(
-            @RequestBody MemberReqDto.SignUpDto request
+    public MemberResDto.HomeResDto getHome(
+            @RequestParam String region,
+            @PageableDefault(size = 10) Pageable pageable
     ) {
-        return ApiResponse.onSuccess(
-                MemberSuccessCode.OK,
-                memberService.signUp(request)
-        );
+        return memberService.getHome(region, pageable);
     }
+
+
+//    @PostMapping("/signup")
+//    public ApiResponse<MemberResDto.SignUpResultDto> signUp(
+//            @RequestBody MemberReqDto.SignUpDto request
+//    ) {
+//        return ApiResponse.onSuccess(
+//                MemberSuccessCode.OK,
+//                memberService.signUp(request)
+//        );
+//    }
 
 
 }

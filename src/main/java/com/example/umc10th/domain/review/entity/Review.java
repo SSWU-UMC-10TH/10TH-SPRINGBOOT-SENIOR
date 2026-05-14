@@ -23,7 +23,7 @@ public class Review extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(columnDefinition = "FLOAT") //?
+    @Column(columnDefinition = "FLOAT")
     private Float star;
 
 

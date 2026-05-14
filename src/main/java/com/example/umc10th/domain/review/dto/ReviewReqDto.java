@@ -10,10 +10,13 @@ import java.util.List;
 public class ReviewReqDto {
 
     public record CreateReviewDto(
+            // ✅ 1. userId 하드코딩
+            Long memberId, // 테스트용
             Long reviewId,
             Long missionId,
             Integer rating,
-            String content,
-            List<String> photos
+            String content
     ) {}
+
+
 }

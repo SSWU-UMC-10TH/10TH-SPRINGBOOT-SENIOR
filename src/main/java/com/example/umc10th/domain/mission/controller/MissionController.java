@@ -1,10 +1,16 @@
 package com.example.umc10th.domain.mission.controller;
 
 import com.example.umc10th.domain.mission.dto.MissionResDto;
+import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
+import com.example.umc10th.domain.mission.repository.MissionRepository;
 import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,28 +18,29 @@ import org.springframework.web.bind.annotation.*;
 public class MissionController {
 
     private final MissionService missionService;
-
+    private final MissionRepository missionRepository;
     // 진행 중 / 완료 미션 조회
     @GetMapping("/missions")
-    public ApiResponse<MissionResDto.MissionListDto> getMissions(
-            @RequestHeader("Authorization") String authorization,
+    public ApiResponse<Page<MissionResDto.MyMissionDto>> getMissions(
+            @RequestHeader(value = "Authorization", required = false) String authorization,
             @RequestParam("is_progressed") Boolean isProgressed,
-            @RequestParam("is_finished") Boolean isFinished
+            @RequestParam("is_finished") Boolean isFinished,
+            @PageableDefault(size = 10) Pageable pageable
     ) {
         return ApiResponse.onSuccess(
                 MissionSuccessCode.MISSION_LIST_OK,
-                missionService.getMissions(authorization, isProgressed, isFinished)
+                missionService.getMyMissions(authorization, isFinished, pageable)
         );
     }
 
-    // 미션 성공 누르기
-    @PostMapping("/missions/{missionId}/complete")
-    public ApiResponse<MissionResDto.CompleteMissionDto> completeMission(
-            @PathVariable Long missionId
-    ) {
-        return ApiResponse.onSuccess(
-                MissionSuccessCode.MISSION_COMPLETE_OK,
-                missionService.completeMission(missionId)
-        );
+    @Transactional
+    public void completeMission(Long missionId) {
+
+        Long memberId = 1L;
+
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new RuntimeException("미션 없음"));
+
+        // TODO: 성공 처리
     }
 }

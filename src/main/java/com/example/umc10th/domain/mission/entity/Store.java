@@ -2,6 +2,7 @@ package com.example.umc10th.domain.mission.entity;
 
 
 import com.example.umc10th.domain.member.enums.Address;
+import com.example.umc10th.domain.member.enums.FoodCategory;
 import com.example.umc10th.global.BaseEntity;
 import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.review.entity.Review;
@@ -35,6 +36,7 @@ public class Store extends BaseEntity {
     @Column(length = 50)
     private String detailAddress;
 
+    private FoodCategory category;
 
     private LocalTime openingHours;
 
@@ -49,6 +51,8 @@ public class Store extends BaseEntity {
     @Builder.Default
     private List<Review> reviewList = new ArrayList<>();
 
+    @Column(nullable = false, length = 30)
+    private String region;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     @Builder.Default
