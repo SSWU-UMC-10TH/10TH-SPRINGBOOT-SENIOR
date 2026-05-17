@@ -26,14 +26,15 @@ public class MissionController {
     }
 
     // 과제 2 - 내가 진행중 / 완료한 미션 모아서 보기
-    @GetMapping("/members/{memberId}")
+    @PostMapping("/missions/mine")
     public ApiResponse<MissionResDTO.MyMissionListDTO> getMyMissions(
-            @PathVariable(name = "memberId") Long memberId,
+            @RequestBody MissionReqDTO.MemberIdDTO request,
             @RequestParam(name = "status") String status, // "challenging" 또는 "complete"로 받기!
             @RequestParam(name = "page", defaultValue = "1") Integer page
     ) {
         Boolean isCompleted = status.equalsIgnoreCase("complete");
-        MissionResDTO.MyMissionListDTO result = missionService.getMyMissionList(memberId, isCompleted, page);
+        MissionResDTO.MyMissionListDTO result = missionService.getMyMissionList(
+                request.getMemberId(), isCompleted, page);
 
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
     }

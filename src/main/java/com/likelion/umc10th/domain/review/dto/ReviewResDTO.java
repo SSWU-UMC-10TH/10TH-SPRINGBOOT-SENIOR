@@ -20,9 +20,9 @@ public class ReviewResDTO {
     @Builder
     public record MyReviewListDTO(
             List<ReviewDetailDTO> reviewList,
-            Integer totalPages,
-            Long totalElements,
-            Boolean isLast
+            Long lastId,
+            BigDecimal lastStar,
+            Boolean hasNext
     ) {}
 
     @Builder

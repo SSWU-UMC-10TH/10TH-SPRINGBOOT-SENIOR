@@ -9,12 +9,12 @@ import com.likelion.umc10th.domain.review.repository.ReviewRepository;
 import com.likelion.umc10th.domain.store.entity.Store;
 import com.likelion.umc10th.domain.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +54,42 @@ public class ReviewService {
     public Page<Review> getStoreReviews(Integer storeId, Integer page) {
         Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, 10, Sort.by("createdAt").descending());
         return reviewRepository.findAllByStoreId(storeId, pageable);
+    }
+
+    public ReviewResDTO.MyReviewListDTO getMyReviewList(ReviewReqDTO.MyReviewListRequestDTO request) {
+
+        Pageable pageable = PageRequest.of(0, 10); // 커서 기반은 항상 0번째 페이지부터 limit개만큼 가져옴
+        Slice<Review> reviewSlice;
+
+        // 정렬 조건에 따른 분기 처리
+        if ("star".equalsIgnoreCase(request.sort())) {
+            reviewSlice = reviewRepository.findAllByMemberIdOrderByStarDescIdDesc(
+                    request.memberId(), request.lastStar(), request.lastId(), pageable);
+        } else {
+            reviewSlice = reviewRepository.findAllByMemberIdAndIdLessThanOrderByIdDesc(
+                    request.memberId(), request.lastId(), pageable);
+        }
+
+        // DTO 변환
+        List<ReviewResDTO.ReviewDetailDTO> reviewDetailDTOList = reviewSlice.getContent().stream()
+                .map(review -> ReviewResDTO.ReviewDetailDTO.builder()
+                        .reviewId(review.getId())
+                        .storeName(review.getStore().getName())
+                        .star(review.getStar())
+                        .content(review.getContent())
+                        .createdAt(review.getCreatedAt().toLocalDate())
+                        .build()
+                ).toList();
+
+        // 다음 조회를 위한 커서 값 추출
+        Long nextLastId = reviewDetailDTOList.isEmpty() ? null : reviewDetailDTOList.get(reviewDetailDTOList.size() - 1).reviewId();
+        BigDecimal nextLastStar = reviewDetailDTOList.isEmpty() ? null : reviewDetailDTOList.get(reviewDetailDTOList.size() - 1).star();
+
+        return ReviewResDTO.MyReviewListDTO.builder()
+                .reviewList(reviewDetailDTOList)
+                .lastId(nextLastId)
+                .lastStar(nextLastStar)
+                .hasNext(reviewSlice.hasNext())
+                .build();
     }
 }

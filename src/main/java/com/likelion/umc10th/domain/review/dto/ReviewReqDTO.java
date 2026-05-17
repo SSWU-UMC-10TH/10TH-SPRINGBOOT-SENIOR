@@ -26,4 +26,13 @@ public class ReviewReqDTO {
 
             List<String> reviewPhotoUrls
     ) {}
+
+    @Builder
+    public record MyReviewListRequestDTO(
+            @NotNull(message = "사용자 ID는 필수입니다.")
+            Long memberId,
+            String sort,
+            Long lastId,
+            BigDecimal lastStar
+    ) {}
 }
