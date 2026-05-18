@@ -7,6 +7,7 @@ import com.example.umc10th.global.BaseEntity;
 @Entity
 @Getter
 @Builder
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Favor extends BaseEntity {
@@ -28,7 +29,9 @@ public class Favor extends BaseEntity {
     private Boolean asianFood;
 
 
+    @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Member member;
+
 }
