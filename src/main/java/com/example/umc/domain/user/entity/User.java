@@ -47,4 +47,18 @@ public class User extends BaseEntity {
         this.auth = auth;
         auth.attachUser(this);
     }
+
+    public static User create(
+            String nickname,
+            Gender gender,
+            LocalDate birth
+    ) {
+        User user = new User();
+        user.nickname = nickname;
+        user.gender = gender;
+        user.birth = birth;
+        user.phoneVerified = false;
+        user.point = 0;
+        return user;
+    }
 }
