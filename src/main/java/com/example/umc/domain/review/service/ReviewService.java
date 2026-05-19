@@ -43,46 +43,42 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public MyReviewListResponse getMyReviews(MyReviewRequest req) {
-        int fetchSize = req.size() + 1;
+    public MyReviewListResponse getMyReviews(
+            Long userId,
+            Long cursorId,
+            Integer cursorStar,
+            Integer size,
+            MyReviewSortType sortType
+    ) {
+        int fetchSize = size + 1;
 
-        List<Review> result = switch (req.sortType()) {
+        List<MyReviewResponse> result = switch (sortType) {
             case ID_ASC -> reviewRepository.findMyReviewsOrderByIdAsc(
-                    req.userId(),
-                    req.cursorId() == null ? 0L : req.cursorId(),
+                    userId,
+                    cursorId == null ? 0L : cursorId,
                     PageRequest.of(0, fetchSize)
             );
 
             case STAR_DESC -> reviewRepository.findMyReviewsOrderByStarDesc(
-                    req.userId(),
-                    req.cursorStar() == null ? 6 : req.cursorStar(),
-                    req.cursorId() == null ? 0L : req.cursorId(),
+                    userId,
+                    cursorStar == null ? 6 : cursorStar,
+                    cursorId == null ? 0L : cursorId,
                     PageRequest.of(0, fetchSize)
             );
         };
 
-        boolean hasNext = result.size() > req.size();
+        boolean hasNext = result.size() > size;
 
         if (hasNext) {
-            result = result.subList(0, req.size());
+            result = result.subList(0, size);
         }
 
-        List<MyReviewResponse> reviews = result.stream()
-                .map(review -> new MyReviewResponse(
-                        review.getId(),
-                        review.getStore().getId(),
-                        review.getStore().getName(),
-                        review.getStar(),
-                        review.getContent()
-                ))
-                .toList();
-
-        Review last = result.isEmpty() ? null : result.get(result.size() - 1);
+        MyReviewResponse last = result.isEmpty() ? null : result.get(result.size() - 1);
 
         return new MyReviewListResponse(
-                reviews,
-                hasNext && last != null ? last.getId() : null,
-                hasNext && last != null ? last.getStar() : null,
+                result,
+                hasNext && last != null ? last.reviewId() : null,
+                hasNext && last != null ? last.star() : null,
                 hasNext
         );
     }

@@ -1,5 +1,6 @@
 package com.example.umc.domain.review.repository;
 
+import com.example.umc.domain.review.dto.MyReviewResponse;
 import com.example.umc.domain.review.entity.Review;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -10,23 +11,35 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("""
-        SELECT r
+        SELECT new com.example.umc.domain.review.dto.MyReviewResponse(
+            r.id,
+            s.id,
+            s.name,
+            r.star,
+            r.content
+        )
         FROM Review r
-        JOIN FETCH r.store s
+        JOIN r.store s
         WHERE r.user.id = :userId
           AND r.id > :cursorId
         ORDER BY r.id ASC
     """)
-    List<Review> findMyReviewsOrderByIdAsc(
+    List<MyReviewResponse> findMyReviewsOrderByIdAsc(
             @Param("userId") Long userId,
             @Param("cursorId") Long cursorId,
             Pageable pageable
     );
 
     @Query("""
-        SELECT r
+        SELECT new com.example.umc.domain.review.dto.MyReviewResponse(
+            r.id,
+            s.id,
+            s.name,
+            r.star,
+            r.content
+        )
         FROM Review r
-        JOIN FETCH r.store s
+        JOIN r.store s
         WHERE r.user.id = :userId
           AND (
                 r.star < :cursorStar
@@ -34,7 +47,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
               )
         ORDER BY r.star DESC, r.id ASC
     """)
-    List<Review> findMyReviewsOrderByStarDesc(
+    List<MyReviewResponse> findMyReviewsOrderByStarDesc(
             @Param("userId") Long userId,
             @Param("cursorStar") Integer cursorStar,
             @Param("cursorId") Long cursorId,
