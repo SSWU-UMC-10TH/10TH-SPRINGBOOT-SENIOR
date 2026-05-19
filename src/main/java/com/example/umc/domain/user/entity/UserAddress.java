@@ -28,18 +28,4 @@ public class UserAddress {
 
     @Column(name = "detail_address", length = 50)
     private String detailAddress;
-
-    public static UserAddress create(
-            User user,
-            String postalCode,
-            String baseAddress,
-            String detailAddress
-    ) {
-        UserAddress userAddress = new UserAddress();
-        userAddress.user = user;
-        userAddress.postalCode = postalCode;
-        userAddress.baseAddress = baseAddress;
-        userAddress.detailAddress = detailAddress;
-        return userAddress;
-    }
 }

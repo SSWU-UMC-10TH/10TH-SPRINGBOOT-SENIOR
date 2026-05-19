@@ -1,13 +1,10 @@
 package com.example.umc.domain.mission.controller;
 
 import com.example.umc.domain.mission.dto.HomeMissionListResponse;
-import com.example.umc.domain.mission.dto.InProgressMissionListResponse;
-import com.example.umc.domain.mission.dto.InProgressMissionRequest;
 import com.example.umc.domain.mission.dto.MyMissionListResponse;
 import com.example.umc.domain.mission.service.MissionService;
 import com.example.umc.global.apiPayload.ApiResponse;
 import com.example.umc.global.apiPayload.code.GeneralSuccessCode;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,12 +46,5 @@ public class MissionController {
     ) {
         missionService.completeMission(userId, missionId);
         return ApiResponse.onSuccess(GeneralSuccessCode.OK,null);
-    }
-
-    @PostMapping("/in-progress")
-    public ApiResponse<InProgressMissionListResponse> getInProgressMissions(
-            @RequestBody @Valid InProgressMissionRequest req
-    ) {
-        return ApiResponse.onSuccess(GeneralSuccessCode.OK, missionService.getInProgressMissions(req));
     }
 }

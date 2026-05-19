@@ -36,13 +36,11 @@ public class Auth extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    public static Auth createLocalAuth(String email, String encodedPassword) {
-        Auth auth = new Auth();
-        auth.email = email;
-        auth.password = encodedPassword;
-        auth.provider = SocialProvider.LOCAL;
-        auth.providerId = null;
-        return auth;
+    public Auth(String email, String password, SocialProvider provider, String providerId) {
+        this.email = email;
+        this.password = password;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 
     public void attachUser(User user) {
