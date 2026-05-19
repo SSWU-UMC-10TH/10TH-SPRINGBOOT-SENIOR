@@ -1,5 +1,6 @@
 package com.example.umc.domain.mission.repository;
 
+import com.example.umc.domain.mission.dto.InProgressMissionResponse;
 import com.example.umc.domain.mission.enums.MissionStatus;
 import com.example.umc.domain.mission.entity.UserMission;
 import org.springframework.data.domain.Pageable;
@@ -60,15 +61,22 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
     );
 
     @Query("""
-        SELECT um
+        SELECT new com.example.umc.domain.mission.dto.InProgressMissionResponse(
+            um.id,
+            m.id,
+            m.name,
+            m.type,
+            s.name,
+            m.deadline
+        )
         FROM UserMission um
-        JOIN FETCH um.mission m
-        JOIN FETCH m.store s
+        JOIN um.mission m
+        JOIN m.store s
         WHERE um.user.id = :userId
           AND um.state = :status
         ORDER BY um.id ASC
     """)
-    Slice<UserMission> findInProgressMissions(
+    Slice<InProgressMissionResponse> findInProgressMissions(
             @Param("userId") Long userId,
             @Param("status") MissionStatus status,
             Pageable pageable

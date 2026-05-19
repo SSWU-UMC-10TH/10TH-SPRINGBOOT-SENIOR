@@ -107,25 +107,15 @@ public class MissionService {
 
     @Transactional(readOnly = true)
     public InProgressMissionListResponse getInProgressMissions(InProgressMissionRequest req) {
-        Slice<UserMission> result = userMissionRepository.findInProgressMissions(
-                req.userId(),
-                MissionStatus.IN_PROGRESS,
-                PageRequest.of(req.page(), req.size())
-        );
-
-        List<InProgressMissionResponse> missions = result.getContent().stream()
-                .map(um -> new InProgressMissionResponse(
-                        um.getId(),
-                        um.getMission().getId(),
-                        um.getMission().getName(),
-                        um.getMission().getType(),
-                        um.getMission().getStore().getName(),
-                        um.getMission().getDeadline()
-                ))
-                .toList();
+        Slice<InProgressMissionResponse> result =
+                userMissionRepository.findInProgressMissions(
+                        req.userId(),
+                        MissionStatus.IN_PROGRESS,
+                        PageRequest.of(req.page(), req.size())
+                );
 
         return new InProgressMissionListResponse(
-                missions,
+                result.getContent(),
                 result.getNumber(),
                 result.getSize(),
                 result.hasNext()
