@@ -31,4 +31,13 @@ public class UserTerms {
 
     @Column(name = "agreed_at")
     private LocalDateTime agreedAt;
+
+    public static UserTerms agree(User user, Terms terms) {
+        UserTerms userTerms = new UserTerms();
+        userTerms.user = user;
+        userTerms.terms = terms;
+        userTerms.agreed = true;
+        userTerms.agreedAt = LocalDateTime.now();
+        return userTerms;
+    }
 }

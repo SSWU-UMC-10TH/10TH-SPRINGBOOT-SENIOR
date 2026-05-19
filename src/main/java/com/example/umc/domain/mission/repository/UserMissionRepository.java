@@ -3,6 +3,7 @@ package com.example.umc.domain.mission.repository;
 import com.example.umc.domain.mission.enums.MissionStatus;
 import com.example.umc.domain.mission.entity.UserMission;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -56,5 +57,20 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
     Optional<UserMission> findByUserIdAndMissionId(
             @Param("userId") Long userId,
             @Param("missionId") Long missionId
+    );
+
+    @Query("""
+        SELECT um
+        FROM UserMission um
+        JOIN FETCH um.mission m
+        JOIN FETCH m.store s
+        WHERE um.user.id = :userId
+          AND um.state = :status
+        ORDER BY um.id ASC
+    """)
+    Slice<UserMission> findInProgressMissions(
+            @Param("userId") Long userId,
+            @Param("status") MissionStatus status,
+            Pageable pageable
     );
 }
