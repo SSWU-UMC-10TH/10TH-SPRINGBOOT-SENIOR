@@ -1,5 +1,7 @@
 package com.example.umc.domain.auth.service;
 
+import com.example.umc.domain.auth.dto.LoginRequest;
+import com.example.umc.domain.auth.dto.LoginResponse;
 import com.example.umc.domain.auth.dto.SignupRequest;
 import com.example.umc.domain.auth.dto.SignupResponse;
 import com.example.umc.domain.auth.entity.Auth;
@@ -13,6 +15,9 @@ import com.example.umc.domain.user.enums.Gender;
 import com.example.umc.domain.user.repository.UserAddressRepository;
 import com.example.umc.domain.user.repository.UserRepository;
 import com.example.umc.domain.user.repository.UserTermsRepository;
+import com.example.umc.global.apiPayload.code.GeneralErrorCode;
+import com.example.umc.global.apiPayload.exception.ProjectException;
+import com.example.umc.global.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +38,7 @@ public class AuthService {
     private final UserTermsRepository userTermsRepository;
     private final TermsRepository termsRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public SignupResponse signup(SignupRequest req) {
@@ -84,5 +90,19 @@ public class AuthService {
                 savedUser.getAuth().getEmail(),
                 savedUser.getNickname()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public LoginResponse login(LoginRequest req) {
+        Auth auth = authRepository.findByEmail(req.email())
+                .orElseThrow(() -> new ProjectException(GeneralErrorCode.UNAUTHORIZED));
+
+        if (!passwordEncoder.matches(req.password(), auth.getPassword())) {
+            throw new ProjectException(GeneralErrorCode.UNAUTHORIZED);
+        }
+
+        String accessToken = jwtUtil.createAccessToken(auth);
+
+        return new LoginResponse(accessToken);
     }
 }

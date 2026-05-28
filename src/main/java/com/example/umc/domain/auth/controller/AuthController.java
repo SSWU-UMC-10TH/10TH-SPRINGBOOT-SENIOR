@@ -1,5 +1,7 @@
 package com.example.umc.domain.auth.controller;
 
+import com.example.umc.domain.auth.dto.LoginRequest;
+import com.example.umc.domain.auth.dto.LoginResponse;
 import com.example.umc.domain.auth.dto.SignupRequest;
 import com.example.umc.domain.auth.dto.SignupResponse;
 import com.example.umc.domain.auth.service.AuthService;
@@ -24,5 +26,12 @@ public class AuthController {
             @RequestBody @Valid SignupRequest req
     ) {
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, authService.signup(req));
+    }
+
+    @PostMapping("/login")
+    public ApiResponse<LoginResponse> login(
+            @RequestBody LoginRequest req
+    ) {
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, authService.login(req));
     }
 }
