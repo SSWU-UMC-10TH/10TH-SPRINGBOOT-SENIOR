@@ -36,7 +36,7 @@ public class MemberService {
     public MemberResDTO.HomeViewDTO getHomeView(Long memberId, Integer regionId, Integer page) {
         // 회원 정보 및 포인트
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("해당 회원이 없습니다."));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         // 완료 미션 카운트
         Integer completedCount = missionRepository.countCompletedMissions(memberId).intValue();
@@ -81,7 +81,7 @@ public class MemberService {
 
     public MemberResDTO.MyPageDTO getMyPageView(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("해당 회원이 없습니다."));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         return MemberResDTO.MyPageDTO.builder()
                 .nickname(member.getNickname()) // name 대신 nickname 사용!

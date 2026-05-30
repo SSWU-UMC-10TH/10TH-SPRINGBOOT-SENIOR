@@ -1,12 +1,16 @@
 package com.likelion.umc10th.domain.review.service;
 
 import com.likelion.umc10th.domain.member.entity.Member;
+import com.likelion.umc10th.domain.member.exception.MemberException;
+import com.likelion.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.likelion.umc10th.domain.member.repository.MemberRepository;
 import com.likelion.umc10th.domain.review.dto.ReviewReqDTO;
 import com.likelion.umc10th.domain.review.dto.ReviewResDTO;
 import com.likelion.umc10th.domain.review.entity.Review;
 import com.likelion.umc10th.domain.review.repository.ReviewRepository;
 import com.likelion.umc10th.domain.store.entity.Store;
+import com.likelion.umc10th.domain.store.exception.StoreException;
+import com.likelion.umc10th.domain.store.exception.code.StoreErrorCode;
 import com.likelion.umc10th.domain.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -18,22 +22,23 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public ReviewResDTO.CreateReviewResultDTO createReview(Long memberId, Integer storeId, ReviewReqDTO.CreateReviewDTO requestDto) {
 
         // 1. 리뷰를 작성할 가게가 있는지 확인
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new RuntimeException("해당 가게가 존재하지 않습니다."));
+                .orElseThrow(() -> new StoreException(StoreErrorCode.STORE_NOT_FOUND));
 
         // 2. 작성자(유저)가 있는지 확인
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         // 3. Review 객체 생성 및 연관관계 설정
         Review review = Review.builder()
