@@ -2,6 +2,7 @@ package com.likelion.umc10th.domain.member.controller;
 
 import com.likelion.umc10th.domain.member.dto.MemberReqDTO;
 import com.likelion.umc10th.domain.member.dto.MemberResDTO;
+import com.likelion.umc10th.domain.member.entity.Member;
 import com.likelion.umc10th.domain.member.service.MemberService;
 import com.likelion.umc10th.domain.mission.dto.MissionResDTO;
 import com.likelion.umc10th.domain.review.dto.ReviewResDTO;
@@ -21,14 +22,14 @@ public class MemberController {
     public ApiResponse<MemberResDTO.SignUpResultDTO> signUp(
             @RequestBody @Valid MemberReqDTO.SignUpDTO request
     ) {
+        Member member = memberService.joinMember(request);
 
-        // 추후 서비스단 제작시 바꿀 코드들
-        MemberResDTO.SignUpResultDTO test = MemberResDTO.SignUpResultDTO.builder()
-                .memberId(1L) // 테스트용 유저
-                .createdAt(java.time.LocalDateTime.now())
+        MemberResDTO.SignUpResultDTO result = MemberResDTO.SignUpResultDTO.builder()
+                .memberId(member.getId())
+                .createdAt(member.getCreatedAt())
                 .build();
 
-        return ApiResponse.onSuccess(GeneralSuccessCode.CREATED, test);
+        return ApiResponse.onSuccess(GeneralSuccessCode.CREATED, result);
     }
 
     @GetMapping("users/me/reviews")

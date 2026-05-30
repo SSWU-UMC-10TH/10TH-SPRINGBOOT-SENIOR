@@ -1,7 +1,10 @@
 package com.likelion.umc10th.domain.member.service;
 
+import com.likelion.umc10th.domain.member.dto.MemberReqDTO;
 import com.likelion.umc10th.domain.member.dto.MemberResDTO;
 import com.likelion.umc10th.domain.member.entity.Member;
+import com.likelion.umc10th.domain.member.exception.MemberException;
+import com.likelion.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.likelion.umc10th.domain.member.repository.MemberRepository;
 import com.likelion.umc10th.domain.mission.entity.Mission;
 import com.likelion.umc10th.domain.mission.repository.MissionRepository;
@@ -10,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final MissionRepository missionRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public MemberResDTO.HomeViewDTO getHomeView(Long memberId, Integer regionId, Integer page) {
         // 회원 정보 및 포인트
@@ -80,5 +85,22 @@ public class MemberService {
                 .socialEmail(member.getSocialEmail() != null ? member.getSocialEmail() : "이메일 정보 없음")
                 .totalPoints(member.getPoint().intValue())
                 .build();
+    }
+
+    @Transactional
+    public Member joinMember(MemberReqDTO.SignUpDTO request) {
+        // 1. name(ID 역할을 하는 이름) 중복 체크
+        memberRepository.findByName(request.name())
+                .ifPresent(member -> {
+                    throw new MemberException(MemberErrorCode.DUPLICATE_USERNAME);
+                });
+
+        // 2. 비밀번호 BCrypt 암호화 (Salt 처리 자동 포함)
+        String encodedPassword = passwordEncoder.encode(request.password());
+
+        // 3. 엔티티 생성 및 저장
+        Member newMember = request.toEntity(encodedPassword);
+
+        return memberRepository.save(newMember);
     }
 }
