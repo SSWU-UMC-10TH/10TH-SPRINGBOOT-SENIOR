@@ -8,6 +8,8 @@ import com.likelion.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.likelion.umc10th.domain.member.repository.MemberRepository;
 import com.likelion.umc10th.domain.mission.entity.Mission;
 import com.likelion.umc10th.domain.mission.repository.MissionRepository;
+import com.likelion.umc10th.global.config.entity.AuthMember;
+import com.likelion.umc10th.global.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +31,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MissionRepository missionRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public MemberResDTO.HomeViewDTO getHomeView(Long memberId, Integer regionId, Integer page) {
         // 회원 정보 및 포인트
@@ -88,7 +91,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Member joinMember(MemberReqDTO.SignUpDTO request) {
+    public MemberResDTO.SignUpResultDTO joinMember(MemberReqDTO.SignUpDTO request) {
         // 1. name(ID 역할을 하는 이름) 중복 체크
         memberRepository.findByName(request.name())
                 .ifPresent(member -> {
@@ -100,7 +103,35 @@ public class MemberService {
 
         // 3. 엔티티 생성 및 저장
         Member newMember = request.toEntity(encodedPassword);
+        Member savedMember = memberRepository.save(newMember);
 
-        return memberRepository.save(newMember);
+        return MemberResDTO.SignUpResultDTO.builder()
+                .memberId(savedMember.getId())
+                .createdAt(savedMember.getCreatedAt())
+                .build();
     }
+
+    @Transactional(readOnly = true) // 로그인 등 단순 조회 요청은 최적화를 위해 readOnly 권장
+    public MemberResDTO.LoginResultDTO loginMember(MemberReqDTO.LoginDTO request) {
+
+        // 1. name(사용자 ID)으로 DB에서 회원 조회
+        Member member = memberRepository.findByName(request.name())
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+        // 💡 MemberErrorCode에 정의된 알맞은 에러코드를 사용해 주세요!
+
+        // 2. 비번 일치 여부
+        if (!passwordEncoder.matches(request.password(), member.getPassword())) {
+            throw new MemberException(MemberErrorCode.INVALID_PASSWORD);
+        }
+
+        AuthMember authMember = new AuthMember(member);
+        String accessToken = jwtUtil.createAccessToken(authMember);
+
+        return MemberResDTO.LoginResultDTO.builder()
+                .memberId(member.getId())
+                .accessToken(accessToken)
+                .tokenType("Bearer")
+                .build();
+    }
+
 }

@@ -54,5 +54,12 @@ public class MemberReqDTO {
                     .build();
     }
     }
+    @Builder
+    public record LoginDTO(
+            @NotBlank(message = "이름(ID)은 필수 입력 항목입니다.")
+            String name,
 
+            @NotBlank(message = "비밀번호는 필수 입력 항목입니다.")
+            String password
+    ) {}
 }

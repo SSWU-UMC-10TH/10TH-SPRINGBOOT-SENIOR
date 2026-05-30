@@ -16,7 +16,11 @@ public enum MemberErrorCode implements BaseErrorCode {
 
     DUPLICATE_USERNAME(HttpStatus.CONFLICT,
             "MEMBER409_1",
-            "이미 존재하는 아이디 입니다.");
+            "이미 존재하는 아이디 입니다."),
+
+    INVALID_PASSWORD(HttpStatus.CONFLICT,
+            "MEMBER404_2",
+            "비밀번호가 틀렸습니다.");
 
     private final HttpStatus status;
     private final String code;
