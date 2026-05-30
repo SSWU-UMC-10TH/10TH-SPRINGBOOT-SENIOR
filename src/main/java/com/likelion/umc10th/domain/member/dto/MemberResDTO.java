@@ -46,4 +46,12 @@ public class MemberResDTO {
             String socialEmail,
             Integer totalPoints
     ) {}
+
+    @Builder
+    public record LoginResultDTO(
+            Long memberId,
+            String accessToken,
+            String tokenType,
+            LocalDateTime expiredAt
+    ) {}
 }

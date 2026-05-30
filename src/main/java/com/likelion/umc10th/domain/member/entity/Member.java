@@ -45,6 +45,7 @@ public class Member extends BaseEntity {
     @Column(name = "social_email", unique = true, length = 100, nullable = true)
     private String socialEmail;
 
+    @Builder.Default
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
@@ -58,6 +59,7 @@ public class Member extends BaseEntity {
     @Column(name = "address_detail", length = 255)
     private String addressDetail;
 
+    @Builder.Default
     @Column(name = "point", nullable = false)
     private Long point = 0L;
 

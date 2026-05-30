@@ -8,8 +8,10 @@ import com.likelion.umc10th.domain.mission.dto.MissionResDTO;
 import com.likelion.umc10th.domain.review.dto.ReviewResDTO;
 import com.likelion.umc10th.global.apiPayload.ApiResponse;
 import com.likelion.umc10th.global.apiPayload.code.GeneralSuccessCode;
+import com.likelion.umc10th.global.config.entity.AuthMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,13 +24,8 @@ public class MemberController {
     public ApiResponse<MemberResDTO.SignUpResultDTO> signUp(
             @RequestBody @Valid MemberReqDTO.SignUpDTO request
     ) {
-        Member member = memberService.joinMember(request);
 
-        MemberResDTO.SignUpResultDTO result = MemberResDTO.SignUpResultDTO.builder()
-                .memberId(member.getId())
-                .createdAt(member.getCreatedAt())
-                .build();
-
+        MemberResDTO.SignUpResultDTO result = memberService.joinMember(request);
         return ApiResponse.onSuccess(GeneralSuccessCode.CREATED, result);
     }
 
@@ -60,12 +57,21 @@ public class MemberController {
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
     }
 
-    // 과제 3 - 마이 페이지
     @GetMapping("members/mypage")
     public ApiResponse<MemberResDTO.MyPageDTO> getMyPage(
-            @RequestParam(name = "memberId") Long memberId
+            @AuthenticationPrincipal AuthMember authMember
     ) {
+        Long memberId = authMember.getMember().getId();
         MemberResDTO.MyPageDTO result = memberService.getMyPageView(memberId);
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
+    }
+
+    @PostMapping("auth/login")
+    public ApiResponse<MemberResDTO.LoginResultDTO> login(
+            @RequestBody @Valid MemberReqDTO.LoginDTO request
+    ) {
+        MemberResDTO.LoginResultDTO result = memberService.loginMember(request);
+
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
     }
 }
