@@ -16,6 +16,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -63,9 +64,22 @@ public class Member extends BaseEntity {
     private String phoneNum;
 
 
-    @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private Favor favor;
 
+    //약관동의
+    @Column(nullable = false)
+    private Boolean agreeAge;
+
+    @Column(nullable = false)
+    private Boolean agreeTerms;
+
+    @Column(nullable = false)
+    private Boolean agreePrivacy;
+
+    private Boolean agreeLocation;
+
+    private Boolean agreeMarketing;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @Builder.Default
@@ -82,7 +96,10 @@ public class Member extends BaseEntity {
     private List<Qna> qnaList = new ArrayList<>();
 
 
-
+    public void addFavor(Favor favor) {
+        this.favor = favor;
+        favor.setMember(this);
+    }
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @Builder.Default

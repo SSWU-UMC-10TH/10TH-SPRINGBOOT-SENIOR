@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -47,6 +47,14 @@ public class MemberController {
 //                memberService.signUp(request)
 //        );
 //    }
+    @PostMapping("/signup")
+    public ApiResponse<MemberResDto.SignUpResultDto> signUp(@RequestBody MemberReqDto.SignUpDto request) {
+
+        return ApiResponse.onSuccess(
+                GeneralSuccessCode.CREATED,
+                memberService.signUp(request)
+        );
+    }
 
 
 }
