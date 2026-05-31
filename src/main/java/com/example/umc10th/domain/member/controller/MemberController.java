@@ -9,9 +9,11 @@ import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
 import com.example.umc10th.global.apiPayload.code.GeneralSuccessCode;
+import com.example.umc10th.global.security.entity.AuthMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,10 +25,10 @@ public class MemberController {
 
     @PostMapping("/v1/users/me")
     public ApiResponse<MemberResDto.GetInfo> getInfo(
-            @RequestBody MemberReqDto.GetInfo dto
-            ){
+            @AuthenticationPrincipal AuthMember member
+    ){
         BaseSuccessCode code= GeneralSuccessCode.OK;
-        return ApiResponse.onSuccess(code, memberService.getInfo(dto));
+        return ApiResponse.onSuccess(code, memberService.getInfo(member));
     }
 
     @GetMapping("/home")
@@ -56,5 +58,13 @@ public class MemberController {
         );
     }
 
-
+    @PostMapping("/login")
+    public ApiResponse<MemberResDto.LoginDto> login(
+            @RequestBody MemberReqDto.LoginDto request
+    ) {
+        return ApiResponse.onSuccess(
+                GeneralSuccessCode.OK,
+                memberService.login(request)
+        );
+    }
 }

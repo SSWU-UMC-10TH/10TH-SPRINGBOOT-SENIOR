@@ -14,12 +14,16 @@ import com.example.umc10th.domain.member.repository.MemberRepository;
 import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.mission.entity.Store;
 import com.example.umc10th.domain.mission.repository.MissionRepository;
+import com.example.umc10th.global.security.entity.AuthMember;
+import com.example.umc10th.global.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.umc10th.domain.mission.repository.MemberMissionRepository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -32,6 +36,7 @@ public class MemberService {
     private final MissionRepository missionRepository;
     private final MemberMissionRepository memberMissionRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public MemberResDto.SignUpResultDto signUp(MemberReqDto.SignUpDto request) {
 
@@ -90,14 +95,9 @@ public class MemberService {
                 savedMember.getName()
         );
     }
-    public MemberResDto.GetInfo getInfo(MemberReqDto.GetInfo dto) {
+    public MemberResDto.GetInfo getInfo(AuthMember member) {
 
-        Long memberId = dto.id();
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
-
-        return MemberConverter.toGetInfo(member);
+        return MemberConverter.toGetInfo(member.getMember());
     }
 
     public MemberResDto.HomeResDto getHome(String regionName, Pageable pageable) {
@@ -153,5 +153,21 @@ public class MemberService {
                 member.getPoint(),
                 missionDtos
         );
+    }
+    @Transactional(readOnly = true)
+    public MemberResDto.LoginDto login(MemberReqDto.LoginDto request) {
+
+        Member member = memberRepository.findByEmail(request.email())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+
+        if (!passwordEncoder.matches(request.password(), member.getPassword())) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        }
+
+        String accessToken = jwtUtil.createAccessToken(
+                new AuthMember(member)
+        );
+
+        return new MemberResDto.LoginDto(accessToken);
     }
 }

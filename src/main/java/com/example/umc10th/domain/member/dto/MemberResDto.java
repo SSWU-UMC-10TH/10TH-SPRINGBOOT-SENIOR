@@ -42,4 +42,8 @@ public class MemberResDto {
             String email,
             String name
     ) {}
+    public record LoginDto (
+
+         String accessToken
+    ){}
 }

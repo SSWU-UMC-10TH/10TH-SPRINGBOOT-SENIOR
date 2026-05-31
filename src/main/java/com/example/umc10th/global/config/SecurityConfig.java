@@ -1,7 +1,10 @@
 package com.example.umc10th.global.config;
 
+import com.example.umc10th.global.security.filter.JwtAuthFilter;
 import com.example.umc10th.global.security.handler.CustomAccessDenied;
 import com.example.umc10th.global.security.handler.CustomEntryPoint;
+import com.example.umc10th.global.security.service.CustomUserDetailsService;
+import com.example.umc10th.global.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +20,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final JwtUtil jwtUtil;
+    private final CustomUserDetailsService customUserDetailsService;
 
     private final String[] allowUris = {
             "/members/signup",
+            "/members/login",
             "/swagger-ui/**",
             "/swagger-resources/**",
             "/v3/api-docs/**"
@@ -61,5 +67,10 @@ public class SecurityConfig {
     @Bean
     public CustomEntryPoint customEntryPoint(){
         return new CustomEntryPoint();
+    }
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter(){
+        return new JwtAuthFilter(jwtUtil, customUserDetailsService);
     }
 }
