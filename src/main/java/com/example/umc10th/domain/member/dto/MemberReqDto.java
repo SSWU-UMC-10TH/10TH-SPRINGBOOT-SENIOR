@@ -1,6 +1,7 @@
 package com.example.umc10th.domain.member.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
@@ -54,5 +55,12 @@ public class MemberReqDto {
             Boolean phoneVerified,
             Integer point
     ) {}
+
+
+    public record LoginDto(
+
+         String email,
+         String password
+    ){}
 
 }
